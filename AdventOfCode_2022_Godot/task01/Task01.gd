@@ -2,8 +2,6 @@ extends Node2D
 
 export var input_path = "res://task01/Input.txt"
 
-
-
 func _ready():
 	var calories_packages = run_part_1()
 	run_part_2(calories_packages)
@@ -27,7 +25,7 @@ func run_part_1() -> Array:
 
 func run_part_2(calories_packages):
 	var result = 0
-	for i in range(3):
+	for _i in range(3):
 		result += calories_packages.max()
 		calories_packages.erase(calories_packages.max())
 	print(result)
