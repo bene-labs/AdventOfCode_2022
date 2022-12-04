@@ -1,6 +1,6 @@
 extends Node2D
 
-export var input_path = "res://task01/Input.txt"
+export var input_path = "res://Day01/Input.txt"
 
 func _ready():
 	var calories_packages = run_part_1()
