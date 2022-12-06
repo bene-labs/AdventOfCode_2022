@@ -1,29 +1,43 @@
 extends Node2D
 
 export var input_path = "res://Day05/Input.txt"
+export var example_path = "res://Day05/Example.txt"
+export var use_example = false
 export var debug = false
 
 func _ready():
-	var res = parse_input(input_path)
+	var res = parse_input(input_path if not use_example else example_path)
 	var stacks = res[0]
 	var commands = res[1]
-	print(run_part_1(stacks, commands))
+	print("Task 1 result: ", run_day05(stacks.duplicate(true), commands, true))
+	print("Task 2 result: ", run_day05(stacks.duplicate(true), commands, false))
 
-func run_part_1(stacks, commands):
+
+func transfer_stack(from: Array, to: Array, ammount: int, one_at_a_time: bool):
+	if one_at_a_time:
+		for _i in range(ammount):
+			if len(from) == 0:
+				break
+			to.push_front(from.pop_front())
+	else:
+		var transfer = []
+		for _i in range(ammount):
+			transfer.append(from.pop_front())
+		for _i in range(ammount):
+			to.push_front(transfer.pop_back())
+
+func run_day05(stacks, commands, is_part1):
 	var result = ""
 	if debug:
 		print(stacks)
 	for command in commands:
-		for i in range(command["Ammount"]):
-			if len(stacks[command["From"] - 1]) == 0:
-				break
-			stacks[command["To"] -1].push_front(stacks[command["From"] - 1].pop_front())
+		transfer_stack(stacks[command["From"] - 1], stacks[command["To"] - 1], command["Ammount"], is_part1)
 		if debug:
 			print(command)
 			print(stacks)
 	
 	for stack in stacks:
-		if stack != null and len(stack) == 0:
+		if stack == null or len(stack) == 0:
 			continue
 		result += stack[0]
 	return result
